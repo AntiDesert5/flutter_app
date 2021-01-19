@@ -1,15 +1,15 @@
 import 'package:firebase_database/firebase_database.dart';
 
-class Shop {
+class pregunta {
   String key;
   String answer;
   String questionId;
   bool right;
   String userId;
 
-  Shop(this.answer,this.questionId,this.right,this.userId);
+  pregunta(this.answer,this.questionId,this.right,this.userId);
 
-  Shop.fromSnapshot(DataSnapshot snapshot)
+  pregunta.fromSnapshot(DataSnapshot snapshot)
       : key = snapshot.key,
         answer = snapshot.value["answer"],
         questionId= snapshot.value["questionId"].toString(),

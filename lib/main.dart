@@ -10,16 +10,12 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.green,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Busqueda de respuestas'),
@@ -46,7 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
 
-          body: ListView.builder(
+          body:
+          ListView.builder(
+
             itemBuilder: (context, index) {
               return index == 0 ? _searchBar() : _listItem(index-1);
             },
@@ -55,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _icono() {
+  _icono() { //funcion para mostrar icono de respuesta correcta
     return Icon(
       Icons.assignment_turned_in,
       size: 35,
@@ -63,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _iconofalse() {
+  _iconofalse() {//muestra icono para respuesta mala
     return Icon(
       Icons.cancel,
       size: 35,
@@ -71,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _searchBar() {
+  _searchBar() { //barra de busqueda, se convierte a minusculas
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
@@ -79,9 +77,9 @@ class _MyHomePageState extends State<MyHomePage> {
         onChanged: (text) {
           text = text.toLowerCase();
           setState(() {
-            notaMostrada = itemsShop.where((note) {
-              var noteTitle = note.userId.toLowerCase();
-              return noteTitle.contains(text);
+            notaMostrada = itemsPregPrincipal.where((nota) {
+              var tituloNota = nota.userId.toLowerCase();
+              return tituloNota.contains(text);
             }).toList();
           });
         },
@@ -89,37 +87,39 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<Shop> itemsShop = List();
-  List<Shop> notaMostrada = List<Shop>();
-  Shop itemShop;
-  DatabaseReference itemRefShop;
+  List<pregunta> itemsPregPrincipal = List();//objetos pregunta, lista
+  List<pregunta> notaMostrada = List<pregunta>();
+  pregunta itemPregunta;
+  DatabaseReference itemRefPreg;
 
   @override
   void initState() {
     super.initState();
-    itemShop = Shop("", "", true, "");
+    itemPregunta = pregunta("", "", true, "");
     final FirebaseDatabase database = FirebaseDatabase.instance;
-    itemRefShop = database.reference().child('answers');
-    itemRefShop.onChildAdded.listen(_onEntryAddedShop);
-    itemRefShop.onChildChanged.listen(_onEntryChangedShop);
+    itemRefPreg = database.reference().child('answers');//rama principal para obtener datos
+    itemRefPreg.onChildAdded.listen(_onEntryAddedShop);
+    itemRefPreg.onChildChanged.listen(_onEntryChangedShop);
   }
 
-  _onEntryAddedShop(Event event) {
+  _onEntryAddedShop(Event event) {//añadir
     setState(() {
-      itemsShop.add(Shop.fromSnapshot(event.snapshot));
+      itemsPregPrincipal.add(pregunta.fromSnapshot(event.snapshot));
+      notaMostrada=itemsPregPrincipal;
     });
   }
 
-  _onEntryChangedShop(Event event) {
-    var old = itemsShop.singleWhere((entry) {
+  _onEntryChangedShop(Event event) {//cargar
+    var old = itemsPregPrincipal.singleWhere((entry) {
       return entry.key == event.snapshot.key;
     });
     setState(() {
-      itemsShop[itemsShop.indexOf(old)] = Shop.fromSnapshot(event.snapshot);
+      itemsPregPrincipal[itemsPregPrincipal.indexOf(old)] = pregunta.fromSnapshot(event.snapshot);
     });
   }
 
-  _listItem(index) {
+  _listItem(index) { //se crea card, se usa listtile para agregar los datos a la card
+    //ademas se pasa la funcion para mostrar iconos, segun resultado
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(
@@ -130,12 +130,12 @@ class _MyHomePageState extends State<MyHomePage> {
             new ListTile(
               title: new Text('Usuario: ' + notaMostrada[index].userId),
               subtitle: new Text('Respuesta: ' +
-                  itemsShop[index].answer +
+                  itemsPregPrincipal[index].answer +
                   '\n' +
                   'Id de pregunta: ' +
-                  itemsShop[index].questionId),
+                  itemsPregPrincipal[index].questionId),
               leading:
-                  itemsShop[index].right == false ? _iconofalse() : _icono(),
+                  itemsPregPrincipal[index].right == false ? _iconofalse() : _icono(),//if
             ),
           ],
         ),
