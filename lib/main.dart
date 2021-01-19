@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_app/widgets/RecipeDetailListItem.dart';
 
-final databaseReference = FirebaseDatabase.instance.reference();
 
 void main() {
   runApp(MyApp());
@@ -44,13 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
 
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
           body: ListView.builder(
             itemBuilder: (context, index) {
               return index == 0 ? _searchBar() : _listItem(index-1);
