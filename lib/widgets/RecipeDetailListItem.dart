@@ -1,12 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-import '../main.dart';
-import 'package:firebase_database/firebase_database.dart';
-
-final databaseReference = FirebaseDatabase.instance.reference();
-
 
 class Shop {
   String key;
