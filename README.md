@@ -1,7 +1,7 @@
 # flutter_app
 
 Aplicacion de flutter que permite filtrar respuestas por ID.
-Los datos se obtinene de una base de datos en Firebase con RealTime Database.
+Los datos se obtienen de una base de datos en Firebase con RealTime Database.
 
 _![alt text](https://github.com/AntiDesert5/flutter_app/blob/master/res/appflutter.gif)_
 
