@@ -1,5 +1,11 @@
+
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_app/widgets/RecipeDetailListItem.dart';
+
+final databaseReference = FirebaseDatabase.instance.reference();
 void main() {
   runApp(MyApp());
 }
@@ -26,7 +32,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter App'),
     );
   }
 }
@@ -104,6 +110,17 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            _searchBar(),
+            new Flexible(
+              child: new FirebaseAnimatedList(
+                  query: itemRefShop,
+                  itemBuilder: (_, DataSnapshot snapshot,
+                      Animation<double> animation, int index) {
+                    return new ListTile(
+                      title: new Text(snapshot.value['answer']),
+                    );
+                  }),
+            ),
           ],
         ),
       ),
@@ -113,5 +130,48 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  _searchBar(){
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: 'Search...'
+        ),
+      onChanged: (text){
+          text=text.toLowerCase();
+      },
+      ),
+    );
+  }
+
+  List<Shop> itemsShop = List();
+  Shop itemShop;
+  DatabaseReference itemRefShop;
+
+  @override
+  void initState() {
+    super.initState();
+    itemShop = Shop("", "", true, "");
+    final FirebaseDatabase database = FirebaseDatabase.instance;
+    itemRefShop = database.reference().child('answers');
+    itemRefShop.onChildAdded.listen(_onEntryAddedShop);
+    itemRefShop.onChildChanged.listen(_onEntryChangedShop);
+  }
+
+  _onEntryAddedShop(Event event) {
+    setState(() {
+      itemsShop.add(Shop.fromSnapshot(event.snapshot));
+    });
+  }
+
+  _onEntryChangedShop(Event event) {
+    var old = itemsShop.singleWhere((entry) {
+      return entry.key == event.snapshot.key;
+    });
+    setState(() {
+      itemsShop[itemsShop.indexOf(old)] = Shop.fromSnapshot(event.snapshot);
+    });
   }
 }
