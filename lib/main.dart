@@ -40,14 +40,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -95,14 +87,14 @@ class _MyHomePageState extends State<MyHomePage> {
   _icono() {
     return Icon(
       Icons.assignment_turned_in,
-      size: 25,
+      size: 35,
       color: Colors.lightGreen,
     );
   }
   _iconofalse() {
     return Icon(
       Icons.cancel,
-      size: 25,
+      size: 35,
       color: Colors.redAccent,
     );
   }
@@ -110,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
-        decoration: InputDecoration(hintText: 'Search...'),
+        decoration: InputDecoration(hintText: 'Buscar por Usuario...'),
         onChanged: (text) {
           text = text.toLowerCase();
           setState(() {
@@ -163,24 +155,17 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: <Widget>[
-            const ListTile(
-              leading: Icon(Icons.album),
-              title: Text('The Enchanted Nightingale'),
-              subtitle: Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-            ),
-            Text(
-              notaMostrada[index].userId,
-              style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold
-              ),
-            ),
-            Text(
-              notaMostrada[index].answer,
-              style: TextStyle(
-                  color: Colors.grey.shade600
-              ),
-
+            new ListTile(
+              title: new Text(
+                  'Usuario: ' + notaMostrada[index].userId),
+              subtitle: new Text('Respuesta: ' +
+                  itemsShop[index].answer +
+                  '\n' +
+                  'Id de pregunta: ' +
+                  itemsShop[index].questionId),
+              leading: itemsShop[index].right == false
+                  ? _iconofalse()
+                  : _icono(),
             ),
           ],
         ),
