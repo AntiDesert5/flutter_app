@@ -1,6 +1,8 @@
 # flutter_app
 
-aplicacion de flutter
+Aplicacion de flutter que permite filtrar respuestas por ID.
+
+_![alt text](https://github.com/AntiDesert5/flutter_app/blob/master/res/appflutter.gif)_
 
 ## Getting Started
 
