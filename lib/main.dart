@@ -82,18 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Animation<double> animation, int index) {
                     return index == 0
                         ? _searchBar()
-                        :  new ListTile(
-                      title: new Text(
-                          'Usuario: ' + notaMostrada[index-1].userId),
-                      subtitle: new Text('Respuesta: ' +
-                          itemsShop[index].answer +
-                          '\n' +
-                          'Id de pregunta: ' +
-                          itemsShop[index].questionId),
-                      leading: itemsShop[index].right == false
-                          ? _icono()
-                          : _icono(),
-                    );
+                        :   _listItem(index-1);
                   }),
             ),
           ],
@@ -105,8 +94,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _icono() {
     return Icon(
-      Icons.ac_unit_rounded,
-      size: 10,
+      Icons.assignment_turned_in,
+      size: 25,
+      color: Colors.lightGreen,
+    );
+  }
+  _iconofalse() {
+    return Icon(
+      Icons.cancel,
+      size: 25,
+      color: Colors.redAccent,
     );
   }
   _searchBar() {
@@ -155,5 +152,39 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       itemsShop[itemsShop.indexOf(old)] = Shop.fromSnapshot(event.snapshot);
     });
+  }
+
+  _listItem(index) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: <Widget>[
+            const ListTile(
+              leading: Icon(Icons.album),
+              title: Text('The Enchanted Nightingale'),
+              subtitle: Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+            ),
+            Text(
+              notaMostrada[index].userId,
+              style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(
+              notaMostrada[index].answer,
+              style: TextStyle(
+                  color: Colors.grey.shade600
+              ),
+
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
