@@ -10,27 +10,27 @@ final databaseReference = FirebaseDatabase.instance.reference();
 
 class Shop {
   String key;
-  String name;
-  String address;
-  bool phone;
-  String thumbnail;
+  String answer;
+  String questionId;
+  bool right;
+  String userId;
 
-  Shop(this.name,this.address,this.phone,this.thumbnail);
+  Shop(this.answer,this.questionId,this.right,this.userId);
 
   Shop.fromSnapshot(DataSnapshot snapshot)
       : key = snapshot.key,
-        name = snapshot.value["answer"],
-        address= snapshot.value["questionId"],
-        phone= snapshot.value["right"],
-        thumbnail= snapshot.value["userId"];
+        answer = snapshot.value["answer"],
+        questionId= snapshot.value["questionId"].toString(),
+        right= snapshot.value["right"],
+        userId= snapshot.value["userId"].toString();
 
 
   toJson() {
     return {
-      "answer": name,
-      "questionId": address,
-      "right": phone,
-      "userId": thumbnail,
+      "answer": answer,
+      "questionId": questionId,
+      "right": right,
+      "userId": userId,
     };
   }
 }
