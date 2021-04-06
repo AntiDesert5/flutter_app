@@ -128,11 +128,11 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             new ListTile(
-              title: new Text('Usuario: ' + notaMostrada[index].userId),
-              subtitle: new Text('Respuesta: ' +
+              title: new Text('Producto: ' + notaMostrada[index].userId),
+              subtitle: new Text('Descripcion: ' +
                   itemsPregPrincipal[index].answer +
                   '\n' +
-                  'Id de pregunta: ' +
+                  'Costo: ' + '\$'+
                   itemsPregPrincipal[index].questionId),
               leading:
                   itemsPregPrincipal[index].right == false ? _iconofalse() : _icono(),//if
